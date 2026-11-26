@@ -54,9 +54,9 @@ The first release should help a user set up a profile, find jobs, review matches
 
 **Work:**
 
-- Create the React and Vite frontend and the Node.js and Express backend.
-- Add Tailwind CSS and the agreed code checks.
-- Add a clear folder layout for pages, shared UI parts, API routes, database code, and job source code.
+- Create the React and Vite frontend and the Node.js and Express backend in TypeScript.
+- Add Tailwind CSS, ESLint, and TypeScript checks.
+- Use `src/client` for frontend code and `src/server` for backend code, with folders for pages, shared UI parts, routes, and services.
 - Add example environment settings with blank values. Keep real keys in ignored local files.
 - Add simple setup steps to the README, including how to start the frontend and backend.
 - Add a basic page and a health route that says whether the backend is running.
