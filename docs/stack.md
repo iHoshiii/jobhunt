@@ -6,9 +6,9 @@
 | Backend | Node.js, Express.js |
 | Database | Supabase (PostgreSQL) |
 | Supabase Integration | Supabase JavaScript Client |
-| AI | Amazon Bedrock |
+| AI | Foundry |
 | AWS Integration | AWS SDK for JavaScript |
-| AI Model | Amazon Nova |
+| AI Model | Selected in Foundry |
 | Job Search | Axios, Cheerio |
 | Browser Automation | Playwright |
 | Document Generation | pdf-lib |
