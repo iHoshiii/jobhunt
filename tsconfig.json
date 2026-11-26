@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.client.json",
+  "include": ["src/client/**/*.ts", "src/client/**/*.tsx", "src/server/**/*.ts", "vite.config.ts"]
+}
