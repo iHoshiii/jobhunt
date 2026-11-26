@@ -2,8 +2,8 @@
 
 | Category | Technology |
 |---|---|
-| Frontend | React.js, Vite, Tailwind CSS |
-| Backend | Node.js, Express.js |
+| Frontend | React, TypeScript, Vite, Tailwind CSS |
+| Backend | Node.js, TypeScript, Express.js |
 | Database | Supabase (PostgreSQL) |
 | Supabase Integration | Supabase JavaScript Client |
 | AI | Foundry |
