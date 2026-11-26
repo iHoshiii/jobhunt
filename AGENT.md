@@ -45,6 +45,7 @@ In addition to clearly communicating, it's important that we clearly communicate
 ## 4. Commit Standards & Granularity
 - **NEVER** batch multiple unrelated changes into a single monolithic commit when multiple major changes exist.
 - **ALWAYS** break down commits logically using conventional prefixes (`feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`).
+- Tell what file or folder did you change (e.g. feat(file/folder name))
 - Commit incrementally after completing each distinct major component or feature subtask.
 
 ## 5. Human-Natural Text Standards
