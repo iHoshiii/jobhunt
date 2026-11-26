@@ -2,34 +2,36 @@
 id: 0d4be8ac-1c11-4bb2-8977-ee990090d639
 ---
 flowchart TB
-    A(["Start"]) --> B["Open JobHunt"]
-    B --> C["Web Dashboard"]
-    C --> D{"User Logged In?"}
-    D -- No --> E["Sign Up / Log In"]
-    E --> C
-    D -- Yes --> F["Load User Profile and Preferences"]
-    F --> G["Start Job Search"]
-    G --> H["Collect Jobs from Job Platforms"]
-    H --> I["Clean and Normalize Job Listings"]
-    I --> J["Remove Duplicate Jobs"]
-    J --> K["Analyze Jobs Using Foundry"]
-    K --> L["Compare with User Skills and Experience"]
-    L --> M["Calculate AI Match Score"]
-    M --> N{"If AI score is more than 75%"}
-    N -- No --> O["Skip or Mark as Low Match"]
-    N -- Yes --> P["Save Job to Supabase"]
-    O --> G
-    P --> R["Display Job on Dashboard"] & S["Send Telegram Notification"]
-    R --> T["User Reviews Job"]
-    S --> T
-    T --> U{"Interested in Job?"}
-    U -- No --> V["Dismiss or Save for Later"]
-    U -- Yes --> W["Research Company"]
-    W --> X["Prepare Resume and Cover Letter"]
-    X --> Y["User Reviews Application"]
-    Y --> Z{"Approve Application?"}
-    Z -- No --> X
-    Z -- Yes --> AA["User Submits Application"]
-    AA --> AB["Update Application Status"]
-    AB --> AC["Track Interviews and Assessments"]
-    AC --> AD(["End"])
+    A([Start]) --> B{User signed in?}
+    B -- No --> C[Sign up or log in]
+    C --> D[Upload resume]
+    B -- Yes --> E{Resume and profile ready?}
+    E -- No --> D
+    E -- Yes --> F[Choose job level, role, location, work type, and salary needs]
+    D --> G[Foundry drafts resume summary]
+    G --> H[User reviews and edits summary]
+    H --> I[Save profile]
+    I --> F
+    F --> J[Search chosen job sources]
+    J --> K[Clean listings and remove duplicates]
+    K --> L[Compare jobs with resume and profile using Foundry]
+    L --> M{Match score 75% or higher?}
+    M -- Yes --> N[Mark High Priority]
+    M -- No --> O[Add to Related]
+    N --> P{Score 85% or higher?}
+    P -- Yes --> Q{Site allows it and all answers are known?}
+    Q -- Yes --> R[Submit application automatically]
+    R --> S[Save result and notify user]
+    Q -- No --> T[Send to manual review and explain why]
+    P -- No --> U[Show in dashboard for user review]
+    O --> U
+    T --> U
+    S --> V[Show match reasons and application status]
+    U --> V
+    V --> W{User wants to apply manually?}
+    W -- Yes --> X[Research company and prepare documents]
+    X --> Y[Help fill form where allowed]
+    Y --> Z[User reviews and submits]
+    Z --> AA[Save application status]
+    W -- No --> AB[Keep in dashboard or dismiss]
+    V --> AC[Send optional Telegram alert for High Priority jobs]

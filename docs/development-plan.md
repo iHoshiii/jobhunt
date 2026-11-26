@@ -4,7 +4,7 @@
 
 This plan shows how to build JobHunt in small steps. Each phase ends with a working part of the app that can be checked before the next part begins.
 
-The first release should help a user set up a profile, find jobs, review AI match results, and track jobs they want to follow. Telegram alerts can be turned on by the user. The app must leave final job choices and application submissions to the user.
+The first release should help a user set up a profile, find jobs, review matches, and automatically apply to matching jobs at 85% or higher. Telegram alerts are optional.
 
 ## Main rules
 
@@ -12,25 +12,41 @@ The first release should help a user set up a profile, find jobs, review AI matc
 - Keep private data, passwords, and service keys out of the source code and Git.
 - Show where job details and AI results came from.
 - Let the user change or remove their profile, saved jobs, and application records.
-- Do not submit job applications for the user.
+- Submit an application automatically when the match score is at least 85%, the job site allows it, and all required answers are known.
 - Follow each job site's rules. Start with sources that allow the planned way of collecting job listings.
 - Keep Telegram optional. The dashboard must work without it.
+- Build JobHunt as a job search and application helper, not as a public job listing site.
 
-## Phase 1: Set the first release choices
+## Product requirements
+
+- The first release is for job seekers in the Philippines.
+- Users choose the work level and type they want from their dashboard. Choices can include internship, entry-level, junior, mid-level, and senior roles.
+- LinkedIn, JobStreet, Indeed, and Trabaho.com are the planned job sources. Check each site's rules and available access method before connecting it. Add sources one at a time.
+- The user uploads a resume first. AI makes a draft profile summary, and the user can edit it before saving.
+- The profile can also include skills, work history, education, job titles, location, work type, and salary needs.
+- Compare each job's skills and description with the resume and the user's edited profile. At 75% or higher, mark it **High Priority**. At 85% or higher, submit the application automatically when the site allows it and all required answers are known. Below 75%, mark it **Related**.
+- Show the match score, matching skills, missing skills, and the reason for the result.
+- The first release should include job search, matching, the dashboard, company research, application document help, browser help, and optional Telegram alerts.
+- Record every automatic application so the user can see what JobHunt sent and when.
+
+## Phase 1: Confirm the first release choices
 
 **Goal:** Agree on the details the team needs before building features.
 
 **Work:**
 
-- Pick the first job sources. Start with one source that allows job listings to be collected, then add more later.
-- Pick the first user location and job types to support.
-- Choose the Foundry service, model, and access method. Record the needed settings, but keep keys in local environment files.
-- Agree on the profile fields, such as skills, work history, education, location, and preferred roles.
-- Decide what a match score means and how the user can change the score limit for alerts.
-- Decide which application states the app will support, such as interested, applied, interview, offer, and closed.
-- Confirm which features belong in the first release and which can wait.
+- Confirm the Philippines as the first search area.
+- Confirm LinkedIn, JobStreet, Indeed, and Trabaho.com as target sources. For each one, find an allowed way to get listings, such as an official API or approved feed. Do not assume that a site allows automated collection.
+- Decide whether users can choose any job level or only levels supported by the first source, such as internship, entry-level, junior, mid-level, and senior.
+- Select the Foundry model for resume summaries and job matching.
+- Confirm that resume upload is the first profile step, and that the user can edit the AI-written summary before it is used.
+- Confirm profile fields for skills, work history, education, job titles, location, work type, and salary needs.
+- Set the match groups: **High Priority** at 75% or higher, and **Related** below 75%. Automatically apply at 85% or higher.
+- Define how match scores are calculated from the job description and the user's resume and profile.
+- If a site blocks automated applications or needs information that is not in the profile, send the job to manual review and explain why.
+- Confirm that all requested features are part of the first release, while still building and checking them in the order in this plan.
 
-**Done when:** The choices are written in the project docs, and the team knows what the first working release will include.
+**Done when:** The open choices above are answered, source access methods are known, and the first release scope is written in the project docs.
 
 ## Phase 2: Prepare the project
 
@@ -68,30 +84,35 @@ The first release should help a user set up a profile, find jobs, review AI matc
 
 **Work:**
 
-- Add a profile page for skills, experience, education, location, and preferred job titles.
+- Make resume upload the first profile step.
+- Use AI to draft a short summary of the resume. Show it to the user for edits and approval before saving it as the profile summary.
+- Add profile fields for skills, work history, education, location, job titles, work type, and salary needs.
+- Add dashboard choices for the job level the user wants, such as internship, entry-level, junior, mid-level, or senior.
 - Let users add several skills and job titles.
 - Let users set work type and location choices, such as remote or in-person.
 - Let users set a minimum match score for alerts.
 - Save profile changes to Supabase and load them when the user signs in.
 - Add form checks and explain missing or invalid fields in plain language.
 
-**Done when:** A user can add, edit, save, and reload their job search profile.
+**Done when:** A user can upload a resume, review and edit its summary, set their job choices, and reload the saved profile.
 
-## Phase 5: Collect and store job listings
+## Phase 5: Find and store jobs from chosen sources
 
 **Goal:** Bring job listings into the app in one consistent format.
 
 **Work:**
 
-- Build one job source first. Keep each source in its own part of the backend so it can be changed without rewriting the rest of the app.
+- Add LinkedIn, JobStreet, Indeed, and Trabaho.com as planned sources, one at a time, using only an access method each site allows.
+- Keep each source in its own part of the backend so it can be changed without rewriting the rest of the app.
 - Collect only the details needed, such as title, company, location, description, source link, and date found.
 - Clean up text and dates so listings from different sources use the same fields.
 - Check required fields and skip broken listings with a useful log message.
 - Find duplicate listings by source ID when available, and by link or other job details when it is not.
 - Save the source name and original link with every listing.
-- Add a manual way for a developer to start a collection run.
+- Make the search serve the user's selected job level, role, and location. JobHunt should use the listings to find jobs to apply for, not present itself as a public job board.
+- Add a manual way for a developer to start a search run.
 
-**Done when:** A developer can run the first source, see clean listings in the database, and run it again without making copies of the same jobs.
+**Done when:** Each connected source can be searched, clean jobs are stored with source links, and another run does not create copies of the same jobs.
 
 ## Phase 6: Add Foundry job matching
 
@@ -101,31 +122,34 @@ The first release should help a user set up a profile, find jobs, review AI matc
 
 - Connect the backend to the chosen Foundry service using settings from the environment.
 - Send only the profile and job details needed for matching.
-- Ask Foundry for a match score, matching skills, missing skills, and a short reason.
+- Ask Foundry for a match score, matching skills, missing skills, and a short reason based on the job, resume, and edited profile.
+- At 75% or higher, mark the result **High Priority**. At 85% or higher, submit the application automatically when the site allows it and all answers are known. Mark lower scores **Related**.
 - Check the result before saving it. Handle missing or invalid answers without breaking the job list.
 - Save the score and explanation with the job and user, along with the time of the match.
 - Avoid repeating the same AI request when the profile and job have not changed.
 - Show a clear message when the AI service is unavailable. Keep the job listing visible.
 - Make it clear that the score is a guide and can be wrong.
 
-**Done when:** A user can see a match score and plain explanation for jobs, and the app handles an AI service error safely.
+**Done when:** A user can see the score, matching and missing skills, and the correct **High Priority** or **Related** group. The app handles an AI service error safely.
 
-## Phase 7: Build the job dashboard and tracking
+## Phase 7: Build the job search dashboard and application tracking
 
 **Goal:** Give users one place to review and manage jobs.
 
 **Work:**
 
-- Show a list of jobs with title, company, location, date found, and match score.
+- Make the dashboard a personal job search workspace, not a general job listing site.
+- Show **High Priority** jobs first and **Related** jobs in a separate group.
+- Show title, company, location, date found, match score, source, and application link.
 - Add search and filters for title, location, source, score, and status.
 - Add a job details page with the full description, source link, and match explanation.
 - Let a user save a job, dismiss it, or mark it as interesting.
-- Add application records and simple states such as interested, applied, interview, offer, and closed.
+- Record each application that JobHunt submits and its result. Let the user update simple states such as interview, offer, and closed.
 - Let users add notes and dates to an application record.
 - Make sure job and application changes belong to the signed-in user.
 - Add useful empty states, such as when the user has no jobs yet.
 
-**Done when:** A user can find a job, review why it matched, save or dismiss it, and update its application state.
+**Done when:** A user can review High Priority and Related jobs, understand each match, see which applications were sent automatically, and update their progress.
 
 ## Phase 8: Add optional Telegram alerts
 
@@ -135,7 +159,7 @@ The first release should help a user set up a profile, find jobs, review AI matc
 
 - Let users connect a Telegram chat using a safe setup flow.
 - Let users turn alerts on or off and set their score limit.
-- Send alerts only for new matches that meet that user's limit.
+- Send alerts only for new High Priority matches that meet that user's limit.
 - Include the job title, company, match score, a short reason, and a link to the job.
 - Track sent alerts so a job does not create repeated messages.
 - Handle missing settings or Telegram errors without stopping job collection.
@@ -170,9 +194,13 @@ The first release should help a user set up a profile, find jobs, review AI matc
 - Let the user review and edit every generated document before saving it.
 - Save user files in private Supabase storage, with access limited to that user.
 - Add a way for users to remove saved files.
-- Do not send applications or contact employers automatically.
+- Add browser help to fill and submit application forms where the job site allows it.
+- Use only facts and documents saved in the user's profile. Do not make up answers to application questions.
+- Before sending, check the score is at least 85%, the job was not already submitted, and all required answers are known.
+- If a site does not allow automation or asks something the profile cannot answer, do not submit. Save the job for manual review and explain why.
+- Save the submission result and notify the user with the job link and date.
 
-**Done when:** A user can review company notes and draft application documents, edit them, and keep or remove them.
+**Done when:** A qualifying application is sent only when all checks pass. The app records the result and sends incomplete or unsupported applications to the user for review.
 
 ## Phase 11: Check safety, quality, and ease of use
 
@@ -210,13 +238,13 @@ The first release should help a user set up a profile, find jobs, review AI matc
 
 ## Suggested first release
 
-The first release should include Phases 1 through 8, with one approved job source, profile setup, Foundry matching, the dashboard, application tracking, and optional Telegram alerts. Phase 9 can follow once manual runs are reliable. Company research, document help, and browser help can come later.
+The first release should include all features in this plan: resume-first profile setup, user-selected job choices, the four requested job sources where allowed access is available, Foundry matching, the High Priority and Related groups, auto-apply for scores of 85% or higher, company research, resume and cover letter help, browser help, application history, and optional Telegram alerts. Build these in order and make sure each part works before adding the next one.
 
 ## After the first release
 
-- Add more job sources after checking their rules and data quality.
+- Connect any remaining requested job sources after confirming an allowed access method and checking data quality.
 - Improve search filters based on what users need.
 - Add better match explanations based on user feedback.
 - Add export tools for application records and generated documents.
 - Review alert quality and tune how often alerts are sent.
-- Add browser assistance only as a guided helper. The user must review and submit each application.
+- Improve browser assistance for sites that allow automatic applications.

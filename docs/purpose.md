@@ -1,25 +1,19 @@
-# JobHunt 
+# JobHunt Purpose
 
-The purpose of JobHunt AI is to simplify and automate the job-hunting process through a web-based AI assistant that continuously searches for suitable employment opportunities based on the user's skills, qualifications, experience, and career goals.
+JobHunt is an automatic job search and application helper for people looking for work in the Philippines. It searches chosen job sources, compares each job with the user's resume and profile, and puts likely matches first. It is a personal tool for finding jobs to apply for, not a public job listing site like LinkedIn.
 
-The system aims to:
+## What JobHunt does
 
-1. **Find Job Opportunities** – Search multiple job platforms and company career pages for relevant openings, especially entry-level, fresh graduate, and junior positions.
+1. Search LinkedIn, JobStreet, Indeed, and Trabaho.com using an access method allowed by each site.
+2. Let the user choose the kind of work they want, such as internship, entry-level, junior, mid-level, or senior work, along with role, location, work type, and salary needs.
+3. Ask the user to upload a resume first. Use AI to make a draft summary, then let the user review and edit it.
+4. Compare job skills and descriptions with the resume and the user's edited profile.
+5. Mark matches of 75% or higher as **High Priority**. Mark lower matches as **Related** so the user can still review them.
+6. Automatically send applications for matches of 85% or higher if the job site allows it and all required answers are known.
+7. Show why a job matched, including matching and missing skills, and link to the source and application page.
+8. Research companies and help prepare resumes, cover letters, and application answers.
+9. Help fill in application forms where the job site allows it. If an answer is missing, send the job to the user for review instead of guessing.
+10. Send optional Telegram alerts for new High Priority jobs.
+11. Keep a record of applications that JobHunt sent and their status.
 
-2. **Analyze Job Compatibility** – Use AI to evaluate job requirements against the user's skills, projects, education, certifications, and experience.
-
-3. **Prioritize Relevant Jobs** – Rank opportunities based on the user's preferred career paths, with software and web development as the highest priority, followed by cloud engineering, QA testing, and other entry-level IT positions.
-
-4. **Send Job Notifications** – Send Telegram notifications when suitable opportunities are found, including job details, company information, AI match scores, and application links.
-
-5. **Research Companies and Recruiters** – Gather publicly available company information and identify verified HR or recruitment contacts when available.
-
-6. **Assist with Applications** – Help prepare tailored resumes, cover letters, and application responses based on each selected job.
-
-7. **Track Applications** – Organize saved jobs, submitted applications, interviews, assessments, and application results through the web dashboard.
-
-8. **Manage Job Opportunities** – Provide a central dashboard for browsing job listings, reviewing AI analysis, managing saved jobs, and monitoring application progress.
-
-9. **Reduce Manual Work** – Minimize the time spent searching job platforms, reviewing listings, researching companies, and preparing application documents.
-
-JobHunt AI aims to serve as an all-in-one personal job-hunting assistant that helps the user discover better opportunities, prepare stronger applications, and manage the entire job application process more efficiently. The web dashboard serves as the main platform, while Telegram provides optional notifications. The user remains in control of final decisions and application submissions.
+JobHunt automates job search, resume review, matching, and application sending for matches of 85% or higher. JobHunt only sends an application when the job site allows it and all required answers are known. AI match scores are estimates and can be wrong.

@@ -28,6 +28,7 @@ architecture-beta
     user:R -- L:dashboard
     dashboard:B -- T:auth
     dashboard:R -- L:api
+    dashboard:B -- T:storage
 
     api:B -- T:search
     api:B -- T:matching
@@ -38,8 +39,10 @@ architecture-beta
     search:B -- T:database
 
     matching:R -- L:foundry
+    matching:R -- L:application
     matching:B -- T:database
     matching:R -- L:telegram
 
     application:B -- T:database
     application:R -- L:storage
+    application:R -- L:jobplatform
