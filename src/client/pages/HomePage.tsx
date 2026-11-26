@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { ConnectionStatus } from "../components/ConnectionStatus";
-import { getApiHealth } from "../services/api";
+import { useEffect, useState } from 'react';
+import { ConnectionStatus } from '../components/ConnectionStatus';
+import { getApiHealth } from '../services/api';
 
 export function HomePage() {
-  const [apiStatus, setApiStatus] = useState("Checking connection");
-  const connected = apiStatus === "Connected";
+  const [apiStatus, setApiStatus] = useState('Checking connection');
+  const connected = apiStatus === 'Connected';
 
   useEffect(() => {
     getApiHealth()
-      .then(() => setApiStatus("Connected"))
-      .catch(() => setApiStatus("Not connected"));
+      .then(() => setApiStatus('Connected'))
+      .catch(() => setApiStatus('Not connected'));
   }, []);
 
   return (
@@ -31,14 +31,12 @@ export function HomePage() {
           Find jobs that fit your skills.
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-          JobHunt will search for roles that fit your resume, highlight strong
-          matches, and help you apply.
+          JobHunt will search for roles that fit your resume, highlight strong matches, and help you
+          apply.
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <ConnectionStatus connected={connected} label={apiStatus.toLowerCase()} />
-          <span className="text-sm text-slate-500">
-            Dashboard setup is coming next.
-          </span>
+          <span className="text-sm text-slate-500">Dashboard setup is coming next.</span>
         </div>
       </section>
     </main>
