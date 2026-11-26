@@ -1,0 +1,47 @@
+
+architecture-beta
+
+    group frontend(cloud)[Frontend]
+    group backend(cloud)[Backend]
+    group supabase(cloud)[Supabase]
+    group aws(cloud)[Amazon Web Services]
+    group external(cloud)[External Services]
+
+    service user(internet)[User]
+    service dashboard(server)[React Dashboard] in frontend
+    service auth(server)[Supabase Client] in frontend
+
+    service api(server)[Express API] in backend
+    service scheduler(server)[Job Scheduler] in backend
+    service search(server)[Job Search] in backend
+    service matching(server)[AI Matching] in backend
+    service application(server)[Application Service] in backend
+
+    service database(database)[PostgreSQL] in supabase
+    service storage(disk)[File Storage] in supabase
+
+    service bedrock(cloud)[Amazon Bedrock] in aws
+    service nova(server)[Amazon Nova] in aws
+
+    service jobplatform(internet)[Job Platforms] in external
+    service telegram(internet)[Telegram Bot API] in external
+
+    user:R -- L:dashboard
+    dashboard:B -- T:auth
+    dashboard:R -- L:api
+
+    api:B -- T:search
+    api:B -- T:matching
+    api:R -- L:application
+
+    scheduler:R -- L:search
+    search:R -- L:jobplatform
+    search:B -- T:database
+
+    matching:R -- L:bedrock
+    bedrock:B -- T:nova
+    matching:B -- T:database
+    matching:R -- L:telegram
+
+    application:B -- T:database
+    application:R -- L:storage
